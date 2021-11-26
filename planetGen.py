@@ -150,7 +150,6 @@ class Planet:
         return self.planetClassType
 
 # Generates planets and appends list
-# NOTE TO SELF - FIX LATER!
 for x in range(0, 2500):
     planet = Planet()
     
