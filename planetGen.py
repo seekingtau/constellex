@@ -16,7 +16,12 @@ nameSyllables = ['ari', 'ek', 'hyp', 'or', 'our', 'bor', 'sto', 'lo',
                  'eth', 'ut', 'uth', 'st', 'ah', 'tah', 'ler', 'lar',
                  'it', 'ot', 'oto', 'oth', 'tob', 'xy', 'ter', 'ata',
                  'bar', 'tar', 'car', 'blu', 'iq', 'utu', 'ut', 'at',
-                 'fu', 'tog', 'xqi', 'mu', 'qi', 'del', 'oth', 'one']
+                 'fu', 'tog', 'xqi', 'mu', 'qi', 'del', 'oth', 'onu',
+                 'pro', 'xi', 'ma', 'mus', 'em', 'plu', 'tun', 'cen',
+                 'ven', 'tau', 'ri', 'du', 'dun', 'une', 'no', 'qua',
+                 'sti', 'qu', 'kis', 'ara', 'he', 'li', 'ohm', 'eon',
+                 'cor', 'ron', 'di', 'dov', 'les', 'ro', 'rio', 'si',
+                 'aur', 'el', 'xo', 'ox', 'hua', 'del', 'pho', 'tor']
 
 # Setting up lists
 nameList = []
@@ -40,6 +45,26 @@ dataDictionary = {'Names': nameList,
                   'Class Level': classLevelList,
                   'Class Type': classTypeList}
 
+# Naming engine
+def namePlanet():
+    syllableCount = randint(2, 4)
+    
+    # Changes name based on syllableCount
+    if syllableCount == 1:
+        return str.title(str(random.choice(nameSyllables)))
+    
+    if syllableCount == 2:
+        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
+    
+    if syllableCount == 3:
+        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
+    
+    if syllableCount ==4:
+        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
+    
+    if syllableCount ==5:
+        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
+
 # Planet class
 class Planet:
     def __init__(self):
@@ -61,21 +86,25 @@ class Planet:
         if self.luminosity > 10:
             self.luminosity = 10
         
-        # Planet naming engine NOTE needs work
-        self.name = str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
+        # Incorporates naming engine
+        self.name = namePlanet()
     
-        # Planet class NOTE needs work
+        # Calculates class level
         self.planetClassLevel = round((((3*int(self.size))/100)+(2*int(self.luminosity))+(2*int(self.moons))) / 7, 2)
         
-        # Planet Class Level
+        # Interprets class level as class type
         if self.planetClassLevel < 3.25:
             self.planetClassType = 'Delta'
+            
         if self.planetClassLevel >= 3.25 and self. planetClassLevel < 4.25:
             self.planetClassType = 'Beta'
+            
         if self.planetClassLevel >= 4.25 and self.planetClassLevel < 5.25:
             self.planetClassType = 'Alpha'
+            
         if self.planetClassLevel >= 5.25 and self.planetClassLevel < 5.75:
             self.planetClassType = 'Omega'
+            
         if self.planetClassLevel >= 5.75:
             self.planetClassType = 'Iris'
     
