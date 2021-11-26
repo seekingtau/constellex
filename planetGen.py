@@ -170,12 +170,28 @@ df = pd.DataFrame(data = dataDictionary)
 # Renders the whole dataframe
 print(df.to_string())
 
-# Counts type of each class, prints it
-countClassType = df['Class Type'].value_counts()
+# Counts each class, then prints it
+def countClassType():
+    classTypeCount = df['Class Type'].value_counts()
+    
+    print(classTypeCount)
 
-print(countClassType)
-
-# Counts type of each planet, prints it
-countPlanetType = df['Planet Type'].value_counts()
-
-print(countPlanetType)
+# Counts each planet type, then prints it
+def countPlanetType():
+    planetTypeCount = df['Planet Type'].value_counts()
+    
+    print(planetTypeCount)
+    
+# Counts luminosity, then prints it
+def countLuminosity():
+    luminosityCount = df['Luminosity'].value_counts()
+    
+    print(luminosityCount)
+    
+# Counts everything
+def countAll():
+    countLuminosity()
+    countPlanetType()
+    countClassType()
+    
+countAll()
