@@ -7,4 +7,4 @@ Current features:
 Future features:
 - Minerals (potentially, if there's interest)
 - More planet types
-- Export to CSV
+- Export to CSV/XLSX
