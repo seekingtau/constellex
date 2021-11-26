@@ -77,14 +77,23 @@ class Planet:
         # Green planet temperature limit
         if self.temperature >= 1 and self.temperature <= 40:
             self.type = random.choice(planetTypesLivable)
+            
         else:
             self.type = random.choice(planetTypesUnlivable)
             
         # Limiting luminosity
         if self.luminosity < 1:
             self.luminosity = 1
+            
         if self.luminosity > 10:
             self.luminosity = 10
+            
+        # Limit moons
+        if self.moons < 1:
+            self.moons = 1
+            
+        if self.moons > 7:
+            self.moons = 7
         
         # Incorporates naming engine
         self.name = namePlanet()
@@ -194,4 +203,19 @@ def countAll():
     countPlanetType()
     countClassType()
     
+# Calls count function
 countAll()
+
+# Allows for export
+def exportXLSX():
+    exportPreference = input('Do you want to export to XLSX? (Y/N)')
+    proceed = 'Y' or 'y'
+    
+    if exportPreference == proceed:
+        df.to_excel('planetList.xlsx')
+        
+    else:
+        print('That is not a valid input.')
+
+# Calls export function
+exportXLSX()
