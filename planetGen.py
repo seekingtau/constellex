@@ -45,26 +45,6 @@ dataDictionary = {'Names': nameList,
                   'Class Level': classLevelList,
                   'Class Type': classTypeList}
 
-# Naming engine
-def namePlanet():
-    syllableCount = randint(2, 4)
-    
-    # Changes name based on syllableCount
-    if syllableCount == 1:
-        return str.title(str(random.choice(nameSyllables)))
-    
-    if syllableCount == 2:
-        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
-    
-    if syllableCount == 3:
-        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
-    
-    if syllableCount ==4:
-        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
-    
-    if syllableCount ==5:
-        return str.title(str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)) + str(random.choice(nameSyllables)))
-
 # Planet class
 class Planet:
     def __init__(self):
@@ -96,7 +76,7 @@ class Planet:
             self.moons = 7
         
         # Incorporates naming engine
-        self.name = namePlanet()
+        self.name = str.title(''.join([random.choice(nameSyllables) for i in range(randint(2,5))]))
     
         # Calculates class level
         self.planetClassLevel = round((((3*int(self.size))/100)+(2*int(self.luminosity))+(2*int(self.moons))) / 7, 2)
@@ -130,48 +110,20 @@ class Planet:
             self.planetClassLevel,
             self.planetClassType)
         
-    # Functions to return the variables
-    def getName(self):
-        return self.name
-    
-    def getLuminosity(self):
-        return self.luminosity
-    
-    def getSize(self):
-        return self.size
-    
-    def getTemperature(self):
-        return self.temperature
-    
-    def getDistance(self):
-        return self.distance
-    
-    def getMoons(self):
-        return self.moons
-    
-    def getType(self):
-        return self.type
-    
-    def getClassLevel(self):
-        return self.planetClassLevel
-    
-    def getClassType(self):
-        return self.planetClassType
-
 # Generates planets and appends list
 for x in range(0, 2500):
     planet = Planet()
     
     # Appends planets to the list
-    nameList.append(planet.getName())
-    luminosityList.append(planet.getLuminosity())
-    sizeList.append(planet.getSize())
-    temperatureList.append(planet.getTemperature())
-    distanceList.append(planet.getDistance())
-    moonsList.append(planet.getMoons())
-    typeList.append(planet.getType())
-    classLevelList.append(planet.getClassLevel())
-    classTypeList.append(planet.getClassType())
+    nameList.append(planet.name)
+    luminosityList.append(planet.luminosity)
+    sizeList.append(planet.size)
+    temperatureList.append(planet.temperature)
+    distanceList.append(planet.distance)
+    moonsList.append(planet.moons)
+    typeList.append(planet.type)
+    classLevelList.append(planet.planetClassLevel)
+    classTypeList.append(planet.planetClassType)
     
 # Loads dataframe
 df = pd.DataFrame(data = dataDictionary)
@@ -208,14 +160,14 @@ countAll()
 
 # Allows for export
 def exportXLSX():
-    exportPreference = input('Do you want to export to XLSX? (Y/N)')
-    proceed = 'Y' or 'y'
+    exportPreference = input('Do you want to export to XLSX? (Y/N) ')
+    proceed = 'Y'
     
     if exportPreference == proceed:
         df.to_excel('planetList.xlsx')
         
     else:
-        print('That is not a valid input.')
+        print('Thank you.')
 
 # Calls export function
 exportXLSX()
