@@ -1,10 +1,16 @@
 # Planets
 Makes planets! Working on more.
 
-Current features:
+### Current features
 - Generates names & other info
+- Export to XLSX
 
-Future features:
+### Working on
+- GPT-3 ready prompts
+
+### Future features
 - Minerals (potentially, if there's interest)
 - More planet types
-- Export to CSV/XLSX
+- Atmosphere + composition
+- Generating more detailed moons as well
+- Create JPEG
