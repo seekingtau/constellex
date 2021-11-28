@@ -3,14 +3,14 @@ Makes planets! Working on more.
 
 ### Current features
 - Generates names & other info
-- Export to XLSX
+- Export to XLSX (currently commented out, removed the Y/N feature because it was annoying)
+- GPT-3 ready output (currently commented out)
 
 ### Working on
-- GPT-3 ready prompts
+- Minerals
+- Atmosphere and composition
 
 ### Future features
-- Minerals (potentially, if there's interest)
 - More planet types
-- Atmosphere + composition
 - Generating more detailed moons as well
 - Create JPEG
