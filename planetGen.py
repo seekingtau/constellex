@@ -33,6 +33,11 @@ moonsList = []
 typeList = []
 classLevelList = []
 classTypeList = []
+supportsLifeList = []
+massList = []
+
+# Potential masses list
+potentialMasses = ['mercury-like', 'mars-like', 'earth-like', 'neptune-like', 'jupiter-like']
 
 # Setting up dictionary
 dataDictionary = {'Names': nameList,
@@ -43,7 +48,9 @@ dataDictionary = {'Names': nameList,
                   'Moons': moonsList,
                   'Planet Type': typeList,
                   'Class Level': classLevelList,
-                  'Class Type': classTypeList}
+                  'Class Type': classTypeList,
+                  'Supports Life': supportsLifeList,
+                  'Mass': massList}
 
 # Planet class
 class Planet:
@@ -52,7 +59,7 @@ class Planet:
         self.size = round(np.random.normal(350, 75))
         self.temperature = round(np.random.normal(50, 50))
         self.distance = randint(12, 30)
-        self.moons = round(np.random.normal(2, 2))
+        self.moons = round(np.random.normal(2, 1.5))
         
         # Green planet temperature limit
         if self.temperature >= 1 and self.temperature <= 40:
@@ -72,8 +79,8 @@ class Planet:
         if self.moons < 1:
             self.moons = 1
             
-        if self.moons > 7:
-            self.moons = 7
+        if self.moons > 6:
+            self.moons = 6
         
         # Incorporates naming engine
         self.name = str.title(''.join([random.choice(nameSyllables) for i in range(randint(2,5))]))
@@ -96,19 +103,38 @@ class Planet:
             
         if self.planetClassLevel >= 5.75:
             self.planetClassType = 'Iris'
-    
-    # I don't really know what this does
-    def __str__(self):
-        return 'Planet % s has luminosity: % s, size: % s, temperature: % s, distance % s, moons % s, and type % s, for a class level of % s and a class of % s' % (
-            self.name,
-            self.luminosity,
-            self.size,
-            self.temperature,
-            self.distance,
-            self.moons,
-            self.type,
-            self.planetClassLevel,
-            self.planetClassType)
+            
+        # Supports life characteristic
+        if self.type == 'green':
+            self.supportsLife = 'yes'
+            
+        else:
+            chanceLife = randint(1,5)
+            
+            if chanceLife == 1:
+                self.supportsLife = 'yes'
+            
+            else:
+                self.supportsLife = 'no'
+                
+        # Mass characteristic
+        self.mass = random.choice(potentialMasses)
+        
+    # Creates GPT-3 ready output
+    def createGPT(self):
+        return '''Generate a story for a planet with these properties:
+                mass: % s
+                moons: % s
+                distance from star: % s million miles
+                supports life: % s
+                name: % s
+                  
+                A story that fits these properties might be:''' % (
+                      self.mass,
+                      self.moons,
+                      self.distance,
+                      self.supportsLife,
+                      self.name)
         
 # Generates planets and appends list
 for x in range(0, 2500):
@@ -124,6 +150,14 @@ for x in range(0, 2500):
     typeList.append(planet.type)
     classLevelList.append(planet.planetClassLevel)
     classTypeList.append(planet.planetClassType)
+    supportsLifeList.append(planet.supportsLife)
+    massList.append(planet.mass)
+    
+    
+    # GPT printed version
+    gptExport = planet.createGPT()
+    
+    # print(gptExport)
     
 # Loads dataframe
 df = pd.DataFrame(data = dataDictionary)
@@ -149,11 +183,29 @@ def countLuminosity():
     
     print(luminosityCount)
     
+def countMoons():
+    moonsCount = df['Moons'].value_counts()
+    
+    print(moonsCount)
+
+def countLife():
+    lifeCount = df['Supports Life'].value_counts()
+    
+    print(lifeCount)
+    
+def countMass():
+    massCount = df['Mass'].value_counts()
+    
+    print(massCount)
+    
 # Counts everything
 def countAll():
     countLuminosity()
     countPlanetType()
     countClassType()
+    countMoons()
+    countLife()
+    countMass()
     
 # Calls count function
 countAll()
@@ -170,4 +222,4 @@ def exportXLSX():
         print('Thank you.')
 
 # Calls export function
-exportXLSX()
+# exportXLSX()
