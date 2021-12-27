@@ -1,6 +1,6 @@
 import random
 import pandas as pd
-from random import randint, seed, choice
+from random import randint, seed
 import numpy as np
 
 # Seed random
@@ -8,7 +8,8 @@ seed(randint(0,1000))
 
 # Planet varieties
 planetTypesLivable = ['rocky', 'ocean', 'green', 'gas']
-planetTypesUnlivable = ['rocky', 'icy', 'ocean', 'gas']
+planetTypesCold = ['rocky', 'icy', 'gas']
+planetTypesHot = ['rocky', 'ocean', 'gas']
 
 # Name list
 nameSyllables = ['ari', 'ek', 'hyp', 'or', 'our', 'bor', 'sto', 'lo',
@@ -23,6 +24,23 @@ nameSyllables = ['ari', 'ek', 'hyp', 'or', 'our', 'bor', 'sto', 'lo',
                  'cor', 'ron', 'di', 'dov', 'les', 'ro', 'rio', 'si',
                  'aur', 'el', 'xo', 'ox', 'hua', 'del', 'pho', 'tor']
 
+# Element lists
+abundantElements = ['Carbon', 'Sulphur', 'Iron', 'Hydrogen', 'Helium', 'Oxygen', 'Nitrogen', 'Silicon', 'Magnesium', 'Neon']
+commonElements = ['Aluminium', 'Calcium', 'Nickel', 'Argon', 'Chromium', 'Potassium', 'Vanadium', 'Tin', 'Lead', 'Manganese']
+uncommonElements = ['Titanium', 'Copper', 'Mercury', 'Cobalt', 'Neodymium', 'Rhenium', 'Phosphorous', 'Radium']
+scarceElements = ['Gold', 'Cadmium', 'Uranium', 'Palladium', 'Osmium', 'Silver', 'Lanthanum', 'Scandium']
+rareElements = ['Rhodium', 'Iridium', 'Plutonium', 'Rhenium', 'Tellerium', 'Platinum']
+
+# Element count dictionary
+elementCountDict = {'Carbon': 0, 'Sulphur': 0, 'Iron': 0, 'Hydrogen': 0, 'Helium': 0, 'Oxygen': 0,
+                    'Nitrogen': 0, 'Silicon': 0, 'Magnesium': 0, 'Neon': 0, 'Aluminium': 0, 'Calcium': 0,
+                    'Nickel': 0, 'Argon': 0, 'Chromium': 0, 'Potassium': 0, 'Vanadium': 0, 'Tin': 0,
+                    'Lead': 0, 'Manganese': 0, 'Titanium': 0, 'Copper': 0, 'Mercury': 0, 'Cobalt': 0, 
+                    'Neodymium': 0, 'Rhenium': 0, 'Phosphorous': 0, 'Radium': 0, 'Gold': 0, 'Cadmium': 0, 
+                    'Uranium': 0, 'Palladium': 0, 'Osmium': 0, 'Silver': 0, 'Lanthanum': 0, 'Scandium': 0,
+                    'Rhodium': 0, 'Iridium': 0, 'Plutonium': 0, 'Rhenium': 0, 'Tellerium': 0, 'Platinum': 0}
+
+
 # Setting up lists
 nameList = []
 luminosityList = []
@@ -35,9 +53,13 @@ classLevelList = []
 classTypeList = []
 supportsLifeList = []
 massList = []
+distanceStarList = []
+elementCountList = []
+elementList = []
 
-# Potential masses list
+# Potential lists
 potentialMasses = ['mercury-like', 'mars-like', 'earth-like', 'neptune-like', 'jupiter-like']
+potentialStarDistances = ['very close', 'close', 'far', 'very far']
 
 # Setting up dictionary
 dataDictionary = {'Names': nameList,
@@ -50,7 +72,10 @@ dataDictionary = {'Names': nameList,
                   'Class Level': classLevelList,
                   'Class Type': classTypeList,
                   'Supports Life': supportsLifeList,
-                  'Mass': massList}
+                  'Mass': massList,
+                  'Distance to star': distanceStarList,
+                  'Element Count': elementCountList,
+                  'Elements': elementList}
 
 # Planet class
 class Planet:
@@ -65,8 +90,11 @@ class Planet:
         if self.temperature >= 1 and self.temperature <= 40:
             self.type = random.choice(planetTypesLivable)
             
-        else:
-            self.type = random.choice(planetTypesUnlivable)
+        if self.temperature < 1:
+            self.type = random.choice(planetTypesCold)
+            
+        if self.temperature > 40:
+            self.type = random.choice(planetTypesHot)
             
         # Limiting luminosity
         if self.luminosity < 1:
@@ -120,24 +148,59 @@ class Planet:
         # Mass characteristic
         self.mass = random.choice(potentialMasses)
         
+        # Distance from star characteristic
+        self.distanceStar = random.choice(potentialStarDistances)
+        
+        # Element count
+        self.elementCount = round(np.random.normal(1,1))
+        
+        if self.elementCount < 1:
+            self.elementCount = 1
+        
+        # Range
+        self.elementCountRange = range(0, self.elementCount)
+        
+        # Setting up the element list
+        self.elements = []
+        
+        # Generating elements
+        for i in self.elementCountRange:
+            elementValue = randint(1,100)
+            
+            if elementValue <= 50:
+                self.elements.append(random.choice(abundantElements))
+                
+            if elementValue > 50 and elementValue <= 75:
+                self.elements.append(random.choice(commonElements))
+                
+            if elementValue > 75 and elementValue <= 90: 
+                self.elements.append(random.choice(uncommonElements))
+                
+            if elementValue > 90 and elementValue <= 98:
+                self.elements.append(random.choice(scarceElements))
+            
+            if elementValue > 98 and elementValue <= 100:
+                self.elements.append(random.choice(rareElements))
+        
+        # Remove repeating elements
+        self.elements = list(set(self.elements))
+        
+        # Add element count
+        for x in self.elements:
+            if x in elementCountDict:
+                elementCountDict[x] += 1
+        
     # Creates GPT-3 ready output
     def createGPT(self):
-        return '''Generate a story for a planet with these properties:
-                mass: % s
-                moons: % s
-                distance from star: % s million miles
-                supports life: % s
-                name: % s
-                  
-                A story that fits these properties might be:''' % (
+        return 'Generate a story for a planet with these properties:\nmass: % s\nmoons: % s\ndistance from star: % s\nsupports life: % s\nname: % s\n\nA story that fits these properties might be:\n' % (
                       self.mass,
                       self.moons,
-                      self.distance,
+                      self.distanceStar,
                       self.supportsLife,
                       self.name)
         
 # Generates planets and appends list
-for x in range(0, 2500):
+for x in range(0, 3888):
     planet = Planet()
     
     # Appends planets to the list
@@ -152,10 +215,12 @@ for x in range(0, 2500):
     classTypeList.append(planet.planetClassType)
     supportsLifeList.append(planet.supportsLife)
     massList.append(planet.mass)
-    
+    distanceStarList.append(planet.distanceStar)
+    elementCountList.append(planet.elementCount)
+    elementList.append(planet.elements)
     
     # GPT printed version
-    gptExport = planet.createGPT()
+    # gptExport = planet.createGPT()
     
     # print(gptExport)
     
@@ -198,6 +263,11 @@ def countMass():
     
     print(massCount)
     
+def countElementValues():
+    elementValueCount = df['Element Count'].value_counts()
+    
+    print(elementValueCount)
+    
 # Counts everything
 def countAll():
     countLuminosity()
@@ -206,6 +276,8 @@ def countAll():
     countMoons()
     countLife()
     countMass()
+    countElementValues()
+    print(elementCountDict)
     
 # Calls count function
 countAll()
@@ -219,7 +291,7 @@ def exportXLSX():
         df.to_excel('planetList.xlsx')
         
     else:
-        print('Thank you.')
+        print('Thank you. Export to XLSX will not proceed.')
 
 # Calls export function
 # exportXLSX()
