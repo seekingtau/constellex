@@ -25,3 +25,5 @@ IF you'd like to create GPT-3 ready outputs, remove the comment at the start of 
 - Generating more detailed moons as well
 - Create generative art out of it (long term)
 - Better, more realistic naming engine that isn't just drawing together random syllables
+
+**Next Release** - rewriting the whole program to generate as solar systems w/ location data, then scale up from there
