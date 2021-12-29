@@ -8,7 +8,7 @@ Well, first, check the licence to make sure you're working within the licence.
 
 If you are working within the licence, just download the code and run it as Python. You need the relevant libraries (random, numpy, and pandas) installed, in addition to Python.
 
-IF you'd like to create GPT-3 ready outputs, remove the comment at the start of the line. You'd also probably be best adding some export to text - note these are for the OpenAI GPT-3 playground, not API-ready.
+*Note* the GPT-3 output feature has been removed. This might be temporary. Will revisit later.
 
 ## Features
 ### Current features
