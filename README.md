@@ -1,5 +1,5 @@
-# Planets
-Planets is a Python project I've been working on that generates data of planets that looks and feels "real enough" for me.
+# Constellex
+Constellex is a Python project I've been working on that generates data of planets and the solar systems they are contained within that looks and feels "real enough" for me. It is to be used for gamified/unrealistic purposes only.
 
 Obviously, it isn't perfect, but it works and is fairly simple.
 
@@ -13,11 +13,13 @@ IF you'd like to create GPT-3 ready outputs, remove the comment at the start of 
 ## Features
 ### Current features
 - Generates names & other info
-- Export to XLSX (currently commented out, removed the Y/N feature because it was annoying)
-- GPT-3 ready output (currently commented out)
+- Export to XLSX
+- Mineral generation
+- Position information
+- Solar systems
 
 ### Working on
-- Minerals
+- **big deal** rendering system
 - Atmosphere and composition
 
 ### Future features
@@ -25,5 +27,3 @@ IF you'd like to create GPT-3 ready outputs, remove the comment at the start of 
 - Generating more detailed moons as well
 - Create generative art out of it (long term)
 - Better, more realistic naming engine that isn't just drawing together random syllables
-
-**Next Release** - rewriting the whole program to generate as solar systems w/ location data, then scale up from there
