@@ -12,17 +12,25 @@ planetTypesCold = ['rocky', 'icy', 'gas']
 planetTypesHot = ['rocky', 'ocean', 'gas']
 
 # Name list
-nameSyllables = ['ari', 'ek', 'hyp', 'or', 'our', 'bor', 'sto', 'lo',
-                 'lor', 'nor', 'dah', 'dor', 'bo', 'to', 'nor', 'et',
-                 'eth', 'ut', 'uth', 'st', 'ah', 'tah', 'ler', 'lar',
-                 'it', 'ot', 'oto', 'oth', 'tob', 'xy', 'ter', 'ata',
-                 'bar', 'tar', 'car', 'blu', 'iq', 'utu', 'ut', 'at',
-                 'fu', 'tog', 'xqi', 'mu', 'qi', 'del', 'oth', 'onu',
-                 'pro', 'xi', 'ma', 'mus', 'em', 'plu', 'tun', 'cen',
-                 'ven', 'tau', 'ri', 'du', 'dun', 'une', 'no', 'qua',
-                 'sti', 'qu', 'kis', 'ara', 'he', 'li', 'ohm', 'eon',
-                 'cor', 'ron', 'di', 'dov', 'les', 'ro', 'rio', 'si',
-                 'aur', 'el', 'xo', 'ox', 'hua', 'del', 'pho', 'tor']
+planetNameSyllables = ['ari', 'ek', 'hyp', 'or', 'our', 'bor', 'sto', 'lo',
+                       'lor', 'nor', 'dah', 'dor', 'bo', 'to', 'nor', 'et',
+                       'eth', 'ut', 'uth', 'st', 'ah', 'tah', 'ler', 'lar',
+                       'it', 'ot', 'oto', 'oth', 'tob', 'xy', 'ter', 'ata',
+                       'bar', 'tar', 'car', 'blu', 'iq', 'utu', 'ut', 'at',
+                       'fu', 'tog', 'xqi', 'mu', 'qi', 'del', 'oth', 'onu',
+                       'pro', 'xi', 'ma', 'mus', 'em', 'plu', 'tun', 'cen',
+                       'ven', 'tau', 'ri', 'du', 'dun', 'une', 'no', 'qua',
+                       'sti', 'qu', 'kis', 'ara', 'he', 'li', 'ohm', 'eon',
+                       'cor', 'ron', 'di', 'dov', 'les', 'ro', 'rio', 'si',
+                       'aur', 'el', 'xo', 'ox', 'hua', 'del', 'pho', 'tor']
+
+solarNameSyllables = ['qu', 'ox', 'xo', 'q', 'i', 'set', 'to', 'oto',
+                      'alph', 'bet', 'a', 'u', 'ri', 'cen', 'aleph',
+                      'lot', 'lote', 'ote', 'oa', 'ti', 's', 'o', 'on',
+                      'hi', 'hyp', 'erion', 'eri', 'tethy', 'thi', 'sys',
+                      'sis', 'promethy', 'sius', 'ion', 'ius', 'hat',
+                      'shep', 'sut', 'miner', 'va', 'vu', 'plut', 'x',
+                      'z']
 
 # Element lists
 abundantElements = ['Carbon', 'Sulphur', 'Iron', 'Hydrogen', 'Helium', 'Oxygen', 'Nitrogen', 'Silicon', 'Magnesium', 'Neon']
@@ -53,16 +61,14 @@ classLevelList = []
 classTypeList = []
 supportsLifeList = []
 massList = []
-distanceStarList = []
 elementCountList = []
 elementList = []
 
 # Potential lists
 potentialMasses = ['mercury-like', 'mars-like', 'earth-like', 'neptune-like', 'jupiter-like']
-potentialStarDistances = ['very close', 'close', 'far', 'very far']
 
 # Setting up dictionary
-dataDictionary = {'Names': nameList,
+dataDictionary = {'Planet Name': nameList,
                   'Luminosity': luminosityList,
                   'Size': sizeList,
                   'Temperature': temperatureList,
@@ -73,7 +79,6 @@ dataDictionary = {'Names': nameList,
                   'Class Type': classTypeList,
                   'Supports Life': supportsLifeList,
                   'Mass': massList,
-                  'Distance to star': distanceStarList,
                   'Element Count': elementCountList,
                   'Elements': elementList}
 
@@ -111,7 +116,7 @@ class Planet:
             self.moons = 6
         
         # Incorporates naming engine
-        self.name = str.title(''.join([random.choice(nameSyllables) for i in range(randint(2,5))]))
+        self.name = str.title(''.join([random.choice(planetNameSyllables) for i in range(randint(2,5))]))
     
         # Calculates class level
         self.planetClassLevel = round((((3*int(self.size))/100)+(2*int(self.luminosity))+(2*int(self.moons))) / 7, 2)
@@ -148,8 +153,11 @@ class Planet:
         # Mass characteristic
         self.mass = random.choice(potentialMasses)
         
-        # Distance from star characteristic
-        self.distanceStar = random.choice(potentialStarDistances)
+        # Distance from star horizontal
+        self.distanceStarX = round(np.random.normal(0,50))
+        
+        # Distance from star vertical
+        self.distanceStarY = round(np.random.normal(0,50))
         
         # Element count
         self.elementCount = round(np.random.normal(1,1))
@@ -189,98 +197,110 @@ class Planet:
         for x in self.elements:
             if x in elementCountDict:
                 elementCountDict[x] += 1
+                
+        # Position X & Y blanks
+        self.positionX = 0
+        self.positionY = 0
+
+class solarSystem:
+    def __init__(self):
+        # Generates local name
+        self.solarSystemName = str.title(''.join([random.choice(solarNameSyllables) for i in range(randint(2,3))]))
         
-    # Creates GPT-3 ready output
-    def createGPT(self):
-        return 'Generate a story for a planet with these properties:\nmass: % s\nmoons: % s\ndistance from star: % s\nsupports life: % s\nname: % s\n\nA story that fits these properties might be:\n' % (
-                      self.mass,
-                      self.moons,
-                      self.distanceStar,
-                      self.supportsLife,
-                      self.name)
+        # Generates solar distance
+        self.solarDistanceX = randint(-10000, 10000)
+        self.solarDistanceY = randint(-10000, 10000)
         
-# Generates planets and appends list
-for x in range(0, 3888):
-    planet = Planet()
-    
-    # Appends planets to the list
-    nameList.append(planet.name)
-    luminosityList.append(planet.luminosity)
-    sizeList.append(planet.size)
-    temperatureList.append(planet.temperature)
-    distanceList.append(planet.distance)
-    moonsList.append(planet.moons)
-    typeList.append(planet.type)
-    classLevelList.append(planet.planetClassLevel)
-    classTypeList.append(planet.planetClassType)
-    supportsLifeList.append(planet.supportsLife)
-    massList.append(planet.mass)
-    distanceStarList.append(planet.distanceStar)
-    elementCountList.append(planet.elementCount)
-    elementList.append(planet.elements)
-    
-    # GPT printed version
-    # gptExport = planet.createGPT()
-    
-    # print(gptExport)
-    
-# Loads dataframe
-df = pd.DataFrame(data = dataDictionary)
+        # Creates local lists
+        self.nameList = []
+        self.luminosityList = []
+        self.sizeList = []
+        self.temperatureList = []
+        self.distanceList = []
+        self.moonsList = []
+        self.typeList = []
+        self.classLevelList = []
+        self.classTypeList = []
+        self.supportsLifeList = []
+        self.massList = []
+        self.elementCountList = []
+        self.elementList = []
+        self.solarSystemNameList = []
+        self.distanceStarXList = []
+        self.distanceStarYList = []
+        self.positionXList = []
+        self.positionYList = []
+        
+        # Sets up local dictionary
+        self.dataDictionary = {'System Name': self.solarSystemNameList,
+                               'Planet Name': self.nameList,
+                               'Luminosity': self.luminosityList,
+                               'Size': self.sizeList,
+                               'Temperature': self.temperatureList,
+                               'Distance': self.distanceList,
+                               'Moons': self.moonsList,
+                               'Planet Type': self.typeList,
+                               'Class Level': self.classLevelList,
+                               'Class Type': self.classTypeList,
+                               'Supports Life': self.supportsLifeList,
+                               'Mass': self.massList,
+                               'Element Count': self.elementCountList,
+                               'Elements': self.elementList,
+                               'Dist. Horiz.': self.distanceStarXList,
+                               'Dist. Verti.': self.distanceStarYList,
+                               'Pos. X': self.positionXList,
+                               'Pos. Y': self.positionYList}
+        
+        # Number of planets
+        numPlanets = round(np.random.normal(6,8))
+        
+        if numPlanets < 1:
+            numPlanets = 1
+        
+        # Adds planets to the Solar System
+        for x in range(0, numPlanets):
+            planet = Planet()
+            
+            # Appends planets to local lists
+            self.solarSystemNameList.append(self.solarSystemName)
+            self.nameList.append(planet.name)
+            self.luminosityList.append(planet.luminosity)
+            self.sizeList.append(planet.size)
+            self.temperatureList.append(planet.temperature)
+            self.distanceList.append(planet.distance)
+            self.moonsList.append(planet.moons)
+            self.typeList.append(planet.type)
+            self.classLevelList.append(planet.planetClassLevel)
+            self.classTypeList.append(planet.planetClassType)
+            self.supportsLifeList.append(planet.supportsLife)
+            self.massList.append(planet.mass)
+            self.elementCountList.append(planet.elementCount)
+            self.elementList.append(planet.elements)
+            self.distanceStarXList.append(planet.distanceStarX)
+            self.distanceStarYList.append(planet.distanceStarY)
+            
+            # Calculates true distance & appends it
+            planet.positionX = self.solarDistanceX + planet.distanceStarX
+            planet.positionY = self.solarDistanceY + planet.distanceStarY
+            
+            self.positionXList.append(planet.positionX)
+            self.positionYList.append(planet.positionY)
+            
+# Big dataframe
+largeDF = pd.DataFrame(data = dataDictionary)
 
-# Renders the whole dataframe
-print(df.to_string())
+# Combining dataframes
+for x in range (0, 501):
+    solarSystemOne = solarSystem()
+    tempDF = pd.DataFrame(data = solarSystemOne.dataDictionary)
+    
+    largeDF = largeDF.append(tempDF)
 
-# Counts each class, then prints it
-def countClassType():
-    classTypeCount = df['Class Type'].value_counts()
-    
-    print(classTypeCount)
+# Adds index
+largeDF = largeDF.reset_index()
 
-# Counts each planet type, then prints it
-def countPlanetType():
-    planetTypeCount = df['Planet Type'].value_counts()
-    
-    print(planetTypeCount)
-    
-# Counts luminosity, then prints it
-def countLuminosity():
-    luminosityCount = df['Luminosity'].value_counts()
-    
-    print(luminosityCount)
-    
-def countMoons():
-    moonsCount = df['Moons'].value_counts()
-    
-    print(moonsCount)
-
-def countLife():
-    lifeCount = df['Supports Life'].value_counts()
-    
-    print(lifeCount)
-    
-def countMass():
-    massCount = df['Mass'].value_counts()
-    
-    print(massCount)
-    
-def countElementValues():
-    elementValueCount = df['Element Count'].value_counts()
-    
-    print(elementValueCount)
-    
-# Counts everything
-def countAll():
-    countLuminosity()
-    countPlanetType()
-    countClassType()
-    countMoons()
-    countLife()
-    countMass()
-    countElementValues()
-    print(elementCountDict)
-    
-# Calls count function
-countAll()
+# Print DF
+print(largeDF.to_string())
 
 # Allows for export
 def exportXLSX():
@@ -288,10 +308,10 @@ def exportXLSX():
     proceed = 'Y'
     
     if exportPreference == proceed:
-        df.to_excel('planetList.xlsx')
+        largeDF.to_excel('planetList.xlsx')
         
     else:
         print('Thank you. Export to XLSX will not proceed.')
 
 # Calls export function
-# exportXLSX()
+exportXLSX()
